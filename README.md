@@ -199,7 +199,7 @@ Spring Boot
 		1) If we start building web applications Tomcat embedded webserver is configured
 		2) If RDBMS is used ==> HikariCP database connection pool is created
 		3) If ORM is used ==> Hibernate as JPA Vendor
-	....
+	==> way you write web and standalone is same
 
 Eclipse for JEE with STS eclipse plugin
 
@@ -212,5 +212,36 @@ Eclipse Marketplace ==> Search STS and install ==> Spring tools 4.3.9...
 
 
 =======================
+
+ 
+@SpringBootApplication
+public class DemoApplication {
+
+	public static void main(String[] args) {
+		ApplicationContext ctx = SpringApplication.run(DemoApplication.class, args);
+	}
+
+}
+
+
+
+SpringApplication.run() same as new AnnotationConfigApplicationContext ==> start a spring container
+
+
+
+@SpringBootApplication
+	1) @ComponentScan("com.example.demo")
+		scans for above mentioned 6 annoatiponos in mentioned package and sub-package and creates instance of those classes
+
+	2) @EnableAutoConfiguration
+		==> Embeddedtomcat Container
+		==> HikariCP if DB is used
+		==> HibernateJPA VEndor if ORM is used
+
+	3) @Configuration
+
+==========
+
+
 
 
