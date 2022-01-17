@@ -7,6 +7,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.adobe.demo.entity.Customer;
+import com.adobe.demo.entity.Item;
+import com.adobe.demo.entity.Order;
 import com.adobe.demo.entity.Product;
 import com.adobe.demo.service.OrderService;
 
@@ -22,8 +25,50 @@ public class StartUp {
 //			listProduct();
 //			getById();
 //			rangeSelection();
-			updateProduct();
+//			updateProduct();
+//			newOrder();
+			listOrders();
 		};
+	}
+
+	private void listOrders() {
+		List<Order> orders = service.getOrders();
+		for(Order o : orders) {
+			System.out.println(o.getTotal() + "," + o.getCustomer().getEmail());
+			List<Item> items = o.getItems();
+			for(Item item : items) {
+				System.out.println(item.getProduct().getName() + " : " + item.getQty());
+			}
+			System.out.println(o.getTotal());
+		}
+	}
+
+	private void newOrder() {
+		Customer c = new Customer();
+		c.setEmail("sam@adobe.com");
+		
+		Order order = new Order();
+		order.setCustomer(c);
+		
+		Item i1 = new Item();
+		Item i2 = new Item();
+		
+		Product p1 = new Product();
+		p1.setId(3);
+		
+		Product p2 = new Product();
+		p2.setId(1);
+		
+		i1.setProduct(p1);
+		i1.setQty(3);
+		
+		i2.setProduct(p2);
+		i2.setQty(1);
+		
+		order.getItems().add(i1);
+		order.getItems().add(i2);
+		
+		service.placeOrder(order);
 	}
 
 	private void updateProduct() {

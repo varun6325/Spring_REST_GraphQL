@@ -7,13 +7,41 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.adobe.demo.dao.OrderDao;
 import com.adobe.demo.dao.ProductDao;
+import com.adobe.demo.entity.Item;
+import com.adobe.demo.entity.Order;
 import com.adobe.demo.entity.Product;
 
 @Service
 public class OrderService {
 	@Autowired
 	private ProductDao productDao;
+	
+	@Autowired
+	private OrderDao orderDao;
+	
+	@Transactional
+	public void placeOrder(Order order) {
+		double total = 0.0;
+		List<Item> items = order.getItems();
+		for(Item item : items) {
+			Product p = productDao.findById(item.getProduct().getId()).get();
+			if(p.getQuantity() < item.getQty()) {
+				throw new RuntimeException("product " + p.getName() + " not in stock");
+			}
+			p.setQuantity(p.getQuantity() - item.getQty()); // Dirty checking ==> update
+			item.setAmount(p.getPrice() * item.getQty());
+			total += item.getAmount();
+			
+		}
+		order.setTotal(total);
+		orderDao.save(order); // cascade takes care of saving items also
+	}
+	
+	public List<Order> getOrders() {
+		return orderDao.findAll();
+	}
 	
 	public Product addProduct(Product p) {
 		return productDao.save(p);

@@ -648,7 +648,85 @@ OneToMany is LAZY loading
 
 ======================
 
+ Bi-directional
+
+ public class Order {
+	 @ManyToOne
+	@JoinColumn(name="customer_fk")   // FK
+	private Customer customer; // order belongs to a Customer
+	
+
+@Entity
+@Table(name="customers")
+public class Customer {
+ 	@OneToMany(mappedBy = "customer")
+	private List<Order> orders = new ArrayList<>();
+
+===================
 
 
+Many to many is rarity
+
+Project and Employee looks like many-to-many 
+Project can have many employees
+Employee can work in many projects
+
+projects
+pid | name | client | start_date | end_date
 
 
+employee
+eid | name | start_date | end_date | role
+
+
+employee_project
+pid | eid
+
+
+What if I need to place role of employee in project and duration in project
+role | start_date and end_date
+
+
+class EmployeeProject{
+	..
+	Date startDate;
+	Date endDate;
+	String role
+}
+
+
+employee_project
+pid | eid | start_date| end_date | role
+
+Employeee ---> EmployeeProject ---> Project
+
+=================
+ManyToMany
+ 
+class Movie {
+	movieID
+	...
+
+	@ManyToMany()
+	@JoinTable(name ="movie_actor",
+	joinColumns = @JoinColumn(name="mid"),
+	inverseJoinColumns = @JoinColumn(name ="aid"))
+	List<Actor> actors = ...
+}
+
+
+class Actor {
+	actorId
+	name;
+	@ManyToMany(mappedBy = "actors")
+	List<Movie> movies = ...
+}
+
+movie
+movie_id  name
+
+actors
+actor_id name
+
+movie_actor
+mid | aid
