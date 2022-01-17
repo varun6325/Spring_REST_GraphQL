@@ -305,5 +305,118 @@ To resolve multiple beans of a giver interface issue:
 			spring.profiles.active=prod
 
 
-===============================
+4) 
+application.properties
+dao=db
+
+@ConditionalOnProperty(name = "dao", havingValue = "mongo")
+
+
+5) 
+@ConditionalOnMissingBean("abean")
+
+==========================================================
+singleton, prototype, request and session
+
+@Scope("request")
+
+===========
+
+Spring creates instances of bean using default constructor and having any of the above mentioned annotations
+
+==> class doesn't have default constructor
+==> class is provided by 3rd party library
+
+How to make objects of these class managed by spring container?
+
+Factory method
+
+
+@Configuration
+public class MyConfig {
+
+	@Bean
+	DataSource dataSource() {
+		ComboPooledDataSource cpds = new ComboPooledDataSource();
+		cpds.setDriverClass( "org.postgresql.Driver" ); //loads the jdbc driver            
+		cpds.setJdbcUrl( "jdbc:postgresql://localhost/testdb" );
+		cpds.setUser("swaldman");                                  
+		cpds.setPassword("test-password");                                  
+			
+		// the settings below are optional -- c3p0 can work with defaults
+		cpds.setMinPoolSize(5);                                     
+		cpds.setAcquireIncrement(5);
+		cpds.setMaxPoolSize(20);
+		return cpds;
+	}
+}
+
+
+
+
+
+=====================================================================
+
+
+ODM ==> MongoDB
+
+ORM ==> Object Relational Mapping
+Library for persisting data into RDBMS
+	layer on top of JDBC
+
+
+@Configuration
+public class MyConfig {
+
+	@Bean
+	DataSource dataSource() {
+		ComboPooledDataSource cpds = new ComboPooledDataSource();
+		cpds.setDriverClass( "org.postgresql.Driver" ); //loads the jdbc driver            
+		cpds.setJdbcUrl( "jdbc:postgresql://localhost/testdb" );
+		cpds.setUser("swaldman");                                  
+		cpds.setPassword("test-password");                                  
+			
+		// the settings below are optional -- c3p0 can work with defaults
+		cpds.setMinPoolSize(5);                                     
+		cpds.setAcquireIncrement(5);
+		cpds.setMaxPoolSize(20);
+		return cpds;
+	}
+
+	@Bean
+	EntityManagerFactory emf(DataSource ds) {
+		LocalContainerEntityManagerFactory emf = new LCEMFB...();
+		emf.setDataSource(ds);
+		emf.setPackagesToScan("com.adobe.prj.entity"); // where are my @Entity class
+		emf.setJpaVendor(new HibernateJpaVendor());
+		...
+
+		return emf;
+	}
+}
+
+	
+
+@Repository
+public class ProductDaoJdbcImpl implements ProductDao {    // productDaoJdbcImpl
+	@PersistenceContext
+	EntityManager em;
+
+	public void addProduct(Product p) {
+		em.save(p);
+	}
+
+}
+
+
+================================
+
+Spring Data JPA simplifies using Spring and JPA ==> no need to create repository classes just create interfaces;
+implementation classes are gernated by byte code instrumentation libraries like CGLib, JavaAssist and ByteByte
+
+JPA ==> Java Persistence API ==> specification for ORM
+
+=================================================
+
+
 
