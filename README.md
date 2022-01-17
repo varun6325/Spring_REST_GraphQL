@@ -419,4 +419,44 @@ JPA ==> Java Persistence API ==> specification for ORM
 =================================================
 
 
+application.properties
 
+spring.datasource.url=jdbc:mysql://localhost:3306/ADOBE_JAVA_GRAPHQL?createDatabaseIfNotExist=true
+
+spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver
+
+spring.datasource.username=root
+
+spring.datasource.password=Welcome123
+
+
+spring.jpa.hibernate.ddl-auto=update
+==> update [ create tables if not exist; use if exists; alter if required]
+==> verify [ check if mapping is done properly to existing tables; if proper use it; else throw exception]
+==> create [ drop and create every time application executes ]
+
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+
+
+em.save(p); // generate SQL for MySQL8
+
+
+======================
+ 
+ OpenSessionInView Pattern ==> web application
+
+ request ==> HibernateSession / EntityManager  / Connection is made available in "request"
+
+ only once response is commited ==> connection is lost
+
+ spring.jpa.open-in-view=true for OpenSessionInView pattern
+
+ ==========
+
+ int executeUpdate() ==> INSERT, DELETE and UPDATE
+
+ ResultSet exceuteQuery() ==> SELECT

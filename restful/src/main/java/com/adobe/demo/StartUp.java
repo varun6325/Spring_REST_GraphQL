@@ -18,9 +18,28 @@ public class StartUp {
 	@Bean
 	public CommandLineRunner runner() {
 		return (args) -> {
-			addProducts();
-			listProduct();
+//			addProducts();
+//			listProduct();
+//			getById();
+//			rangeSelection();
+			updateProduct();
 		};
+	}
+
+	private void updateProduct() {
+		service.updateProduct(3, 890.50);
+	}
+
+	private void rangeSelection() {
+		List<Product> products = service.getByRange(100, 50_000);
+		for(Product p : products) {
+			System.out.println(p);
+		}
+	}
+
+	private void getById() {
+		Product p = service.getProductById(1); // Proxy
+		System.out.println(p);
 	}
 
 	private void listProduct() {
