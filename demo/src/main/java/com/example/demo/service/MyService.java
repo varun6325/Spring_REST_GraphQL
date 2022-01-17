@@ -8,6 +8,7 @@ import com.example.demo.dao.EmployeeDao;
 @Service
 public class MyService {
 	@Autowired
+
 	private EmployeeDao employeeDao;
 	
 	public void doTask() {

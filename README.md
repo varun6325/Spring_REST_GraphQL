@@ -241,7 +241,69 @@ SpringApplication.run() same as new AnnotationConfigApplicationContext ==> start
 	3) @Configuration
 
 ==========
+@Autowired
+private EmployeeDao employeeDao;
 
 
+@Autowired
+public MyService(EmployeeDao dao) {
 
+}
+
+
+@Autowired
+public void setX(EmployeeDao dao) {
+
+}
+
+=========================
+
+@SpringBootApplication
+public class DemoApplication {
+
+	public static void main(String[] args) {
+		ApplicationContext ctx = SpringApplication.run(DemoApplication.class, args);
+		
+		MyService service = ctx.getBean("myService", MyService.class);
+		service.doTask();
+		
+		System.out.println("********");
+		
+		String[] names = ctx.getBeanDefinitionNames();
+		for(String name : names) {
+			System.out.println(name);
+		}
+	}
+
+}
+
+========
+To resolve multiple beans of a giver interface issue:
+
+1) @Primary
+2) @Qualifier
+
+	Example:
+	@Autowired
+	@Qualifier("employeeDaoMongoImpl")
+	private EmployeeDao employeeDao;
+
+3) @Profile
+	
+	testing , development, 
+
+	3.1) Command Line arguments
+		--spring.profiles.active=dev
+		--spring.profiles.active=prod
+
+	Run As --> Run Configuration
+		Program arguments
+
+	3.2) system properties
+
+	3.3) application.properties
+			spring.profiles.active=prod
+
+
+===============================
 
