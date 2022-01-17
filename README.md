@@ -460,3 +460,195 @@ em.save(p); // generate SQL for MySQL8
  int executeUpdate() ==> INSERT, DELETE and UPDATE
 
  ResultSet exceuteQuery() ==> SELECT
+
+ ================================================
+
+ Transactions
+
+ Programmatic Transaction 
+ using JDBC
+
+ @Override
+	public void addProduct(Product p) throws DaoException {
+		String SQL = "INSERT INTO products (id, name, price, category) VALUES (0, ?, ?, ?)";
+		Connection con = null;
+		try {
+			con = DriverManager.getConnection(URL, USER, PWD);
+			con.setAutoCommit(false); // begin TX
+				PreparedStatement ps = con.prepareStatement(SQL);
+				ps.setString(1, p.getName());
+				ps.setDouble(2, p.getPrice());
+				ps.setString(3, p.getCategory());
+				ps.executeUpdate();
+			con.commit();
+		} catch (SQLException e) {
+			con.rollback();
+			throw new DaoException("unable to add product", e);
+		} finally {
+			if(con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+===
+
+
+ @Override
+	public void addProduct(Product p) throws DaoException {
+		
+		
+		try {
+			Transaction tx = em.beginTransaction();// begin TX
+				PreparedStatement ps = con.prepareStatement(SQL);
+				ps.setString(1, p.getName());
+				ps.setDouble(2, p.getPrice());
+				ps.setString(3, p.getCategory());
+				ps.executeUpdate();
+			tx.commit();
+		} catch (SQLException e) {
+			tx.rollback();
+			throw new DaoException("unable to add product", e);
+		} finally {
+			 
+		}
+	}
+===
+
+Declarative Transaction support is enabled by default
+
+@EnableTransactionManagment is enabled by default
+
+
+Atomic opertion:
+
+@Transactional
+public void updateProduct(int id, double price) {
+		productDao.updateProductPrice(id, price);
+}
+
+when method is called Tx begins
+when method completes Tx Commits
+any Runtimeexception thrown inside method not handled tx rollback
+
+
+======================
+
+@Transactional by default is using Transaction.REQUIRED
+
+@Transactional
+m1() {
+   m2();
+   m3();
+}
+
+@Transactional(TxType.REQUIRES_NEW)
+m2() {
+
+}
+
+@Transactional
+m3() {
+
+}
+
+===============================================================
+
+
+Mapping Associations
+1) onetoone
+2) onetomany
+3) manytoone
+4) manytomany
+
+
+Without Cascade
+class Order 
+	@OneToMany
+	@JoinColumn(name="order_fk")   // FK
+	private List<Item> items = new ArrayList<>();
+
+Assume 1 order has 3 items
+
+to persist
+
+em.save(order);
+em.save(i1);
+em.save(i2);
+em.save(i3);
+
+
+to delete
+
+em.delete(order);
+em.delete(i1);
+em.delete(i2);
+em.delete(i3);
+
+OrderDao and ItemDao
+
+==
+
+With Cascade:
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="order_fk")   // FK
+	private List<Item> items = new ArrayList<>();
+
+We don;t need ItemDao; Just OrderDao is sufficient
+
+to persist
+em.save(order); ==> take care of persiting items also
+to delete
+em.delete(order) ==> deletes items of order also
+
+================
+
+
+Lazy fetching
+
+@OneToMany(cascade = CascadeType.ALL)
+@JoinColumn(name="order_fk")   // FK
+private List<Item> items = new ArrayList<>();
+
+orderDao.findById(20);
+
+select orders record whose id is 20; items are not fetched
+
+need to make a seperate call to get items;
+
+
+orderDao.findAll(); ==> 40 orders
+
+loop == thro 40 orders
+itemDao.getByOrder(oid)
+
+============
+
+Eager Fetching
+
+@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+@JoinColumn(name="order_fk")   // FK
+private List<Item> items = new ArrayList<>();
+
+
+getting orders will pull items belonging to order also ==> EAGER
+
+===========
+
+Default
+
+ManyToOne is EAGER fetching
+
+OneToMany is LAZY loading
+
+======================
+
+
+
+
+
