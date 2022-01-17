@@ -52,3 +52,165 @@ bash terminal> mysql -u "root" -p
 mysql> exit
 
 ============================
+
+Spring and Spring Boot
+JPA
+RESTful Web services
+GraphQL
+Security
+
+==============================
+
+Spring and Spring Boot
+
+Spring Framework for building enterprise applications
+It provides a lightweight container [ Core Module of Spring helps mange lifecycle of objects and Dependency Injection]
+
+UI ==> Service ==> DAO ===> Database
+
+UI <-- service <-- DAO <-- database
+
+
+EAI ==> Enterprise application Integration
+
+=========================
+
+
+Meta data ==> XML or Annotation
+
+public interface ProductDao {
+	void addProduct();
+}
+
+
+public class ProductDaoJdbcImpl implements ProductDao {
+	...
+}
+
+public class ProductDaoMongoImpl implements ProductDao {
+	...
+}
+
+public class MyService {
+	ProductDao productDao;
+
+	public void setDao(ProductDao dao) {
+		this.productDao = dao;
+	} 
+
+
+	doTask() {
+		this.productDao.addProduct();
+	}
+}
+
+beans.xml
+<bean id="jdbcImpl" class ="pkg.ProductDaoJdbcImpl" scope="prototype"/>
+<bean id="mongoImpl" class ="pkg.ProductDaoMongoImpl" />
+
+<bean id="service" class="pkg.MyService">
+	<property name="dao" ref="jdbcImpl" />
+</bean>
+
+
+<bean id="service2" class="pkg.OtherService">
+	<property name="dao" ref="jdbcImpl" />
+</bean>
+
+
+
+BeanFactory and ApplicationContext
+
+ApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml");
+
+ctx.getBean("service"); // get bean from container
+
+
+scope of bean can be "singleton", "prototype", "request" or "session"
+
+
+==============================================================================
+
+
+
+Annotation
+----------
+
+1) @Component
+2) @Repository
+3) @Service
+4) @Configuration
+5) @Controller
+6) @RestController
+
+
+Spring creates instances of class which has any of these at classlevel
+
+
+
+public interface ProductDao {
+	void addProduct();
+}
+
+https://github.com/spring-projects/spring-framework/blob/main/spring-jdbc/src/main/resources/org/springframework/jdbc/support/sql-error-codes.xml
+
+@Repository
+public class ProductDaoJdbcImpl implements ProductDao {    // productDaoJdbcImpl
+	...
+}
+
+
+@Service
+public class MyService {      // myService
+
+	@Autowired
+	ProductDao productDao;
+
+ 
+	doTask() {
+		this.productDao.addProduct();
+	}
+}
+
+
+@Component("sample") // sample
+
+
+try {
+
+} catch(SQLException ex) {
+	if(ex.getErrorCode() == 1062) {
+		UniqueConstraint ...
+	}
+}
+
+===
+
+wiring beans is done using @Autowired or @Inject
+
+Proxy Bytecode instrutementation ==> CGLib, ByteBuddy, JavaAssist
+
+======================================================================================
+
+
+Spring Boot
+	==> Lots of configuration comes out of the box
+	==> Highly opiniated framework / library on top of Spring Framework
+		1) If we start building web applications Tomcat embedded webserver is configured
+		2) If RDBMS is used ==> HikariCP database connection pool is created
+		3) If ORM is used ==> Hibernate as JPA Vendor
+	....
+
+Eclipse for JEE with STS eclipse plugin
+
+
+New --> Spring Starter Project
+
+else
+
+Eclipse Marketplace ==> Search STS and install ==> Spring tools 4.3.9...
+
+
+=======================
+
+
