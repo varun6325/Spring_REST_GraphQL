@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.adobe.demo.dto.ReportDTO;
 import com.adobe.demo.entity.Customer;
 import com.adobe.demo.entity.Item;
 import com.adobe.demo.entity.Order;
@@ -27,8 +28,16 @@ public class StartUp {
 //			rangeSelection();
 //			updateProduct();
 //			newOrder();
-			listOrders();
+//			listOrders();
+			reports();
 		};
+	}
+
+	private void reports() {
+		List<ReportDTO> reports = service.getReport();
+		for(ReportDTO report : reports) {
+			System.out.println(report);
+		}
 	}
 
 	private void listOrders() {

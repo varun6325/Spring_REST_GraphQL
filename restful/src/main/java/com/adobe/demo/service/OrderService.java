@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.adobe.demo.dao.OrderDao;
 import com.adobe.demo.dao.ProductDao;
+import com.adobe.demo.dto.ReportDTO;
 import com.adobe.demo.entity.Item;
 import com.adobe.demo.entity.Order;
 import com.adobe.demo.entity.Product;
@@ -20,6 +21,10 @@ public class OrderService {
 	
 	@Autowired
 	private OrderDao orderDao;
+	
+	public List<ReportDTO> getReport() {
+		return orderDao.getReport();
+	}
 	
 	@Transactional
 	public void placeOrder(Order order) {
