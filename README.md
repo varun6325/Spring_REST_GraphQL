@@ -1055,7 +1055,57 @@ download POSTMAN
 
 ====================
 
-	
+POST http://localhost:8080/api/products
+
+Headers
+Accept : application/json
+content-type: application/json
+
+
+Body "raw"
+
+{
+    "name": "Pen",
+    "price": 150.0,
+    "quantity": 100
+}
+
+
+=======================================
+
+PUT http://localhost:8080/api/products/4
+
+Headers
+
+Body "raw"
+
+{
+   "price": 34999.00
+}
+
+
+=====
+
+POST http://localhost:8080/api/orders
+
+Body:
+
+{
+	"customer" : {
+		"email" : "peter@adobe.com"
+	},
+	"items": [
+		{"qty" : 3, "product" : {"id": 2}},
+		{"qty" : 1, "product" : {"id": 1}},
+		{"qty" : 2, "product" : {"id": 3}}
+	]
+}
+
+
+===
+
+GET 
+http://localhost:8080/api/orders
 
 
 
