@@ -818,6 +818,100 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>, JpaSp
 
 class CustomerSpecification implements Specification {
 	public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-		
+
 	}
 }
+
+specificationExample.zip
+
+======
+
+entityGraphExample.zip
+
+
+javax.persistence.fetchgraph
+
+
+javax.persistence.loadgraph
+
+
+The FetchType method defines two strategies for fetching data from the database:
+
+javax.persistence.fetchgraph – Only the specified attributes are retrieved from the database.  
+companyWithDepartmentsGraph => loads only company and "departments"; other FetchType is ignored
+
+javax.persistence.loadgraph – In addition to the specified attributes, attributes statically configured as EAGER are also retrieved.
+
+companyWithDepartmentsGraph ==> loads  company and "departments"; and also other associations which are EAGER.
+
+
+===========================================
+
+"companyWithDepartmentsGraph"
+
+ select
+        company0_.id as id1_2_0_,
+        company0_.name as name2_2_0_,
+        department1_.company_id as company_3_3_1_,
+        department1_.id as id1_3_1_,
+        department1_.id as id1_3_2_,
+        department1_.company_id as company_3_3_2_,
+        department1_.name as name2_3_2_ 
+    from
+        company company0_ 
+    left outer join
+        department department1_ 
+            on company0_.id=department1_.company_id 
+    where
+        company0_.id=?
+
+
+"companyWithDepartmentsAndEmployeesAndOfficesGraph"
+
+     select
+        company0_.id as id1_2_0_,
+        company0_.name as name2_2_0_,
+        department1_.company_id as company_3_3_1_,
+        department1_.id as id1_3_1_,
+        department1_.id as id1_3_2_,
+        department1_.company_id as company_3_3_2_,
+        department1_.name as name2_3_2_,
+        employees2_.department_id as departme5_4_3_,
+        employees2_.id as id1_4_3_,
+        employees2_.id as id1_4_4_,
+        employees2_.address_id as address_4_4_4_,
+        employees2_.department_id as departme5_4_4_,
+        employees2_.name as name2_4_4_,
+        employees2_.surname as surname3_4_4_,
+        offices3_.department_id as departme4_5_5_,
+        offices3_.id as id1_5_5_,
+        offices3_.id as id1_5_6_,
+        offices3_.address_id as address_3_5_6_,
+        offices3_.department_id as departme4_5_6_,
+        offices3_.name as name2_5_6_ 
+    from
+        company company0_ 
+    left outer join
+        department department1_ 
+            on company0_.id=department1_.company_id 
+    left outer join
+        employee employees2_ 
+            on department1_.id=employees2_.department_id 
+    left outer join
+        office offices3_ 
+            on department1_.id=offices3_.department_id 
+    where
+        company0_.id=?
+
+=========================================================
+
+
+"companyWithDepartmentsAndEmployeesGraph"
+	select * from company c join on c.departments d join on d.employees
+
+	@OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
+	    private Set<Department> departments = new HashSet<>();
+
+	    ===============
+
+	    
