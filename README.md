@@ -1248,6 +1248,180 @@ Mockito ==> Mocking library ==> EasyMock / JMock
 =============
 
 
+Document REST APis
+
+RAML ==> yml
+
+uri
+	path:
+	 method: get
+	 	arguments:
+
+
+
+OpenAPI / Swagger
+ Api way of documentation
+
+
+
+
+
+
+
+http://localhost:8080/v2/api-docs
+
+http://localhost:8080/swagger-ui.html
+
+@Api(value = "my product controller")
+@ApiOperation(value = "get all products")
+
+===============
+
+GraphQL
+
+like REST its architectural pattern
+
+
+RESTful web services uses specs provided by Richardson
+plural nouns
+CRUD ==> GET, POST, PUT and DELETE
+
+
+GraphQL ==> Facebook ==> 2012 ==> 2015
+
+===========
+==> Overfetching
+https://jsonplaceholder.typicode.com/posts
+
+
+n + 1 problem
+==> underfetching
+https://jsonplaceholder.typicode.com/comments?postId=1
+https://jsonplaceholder.typicode.com/comments?ppostId=2
+https://jsonplaceholder.typicode.com/comments?ppostId=3
+https://jsonplaceholder.typicode.com/comments?ppostId=4
+
+
+POST
+http://localhost:8080/graphql
+
+GraphQL ==> Query Language for fetching data over HTTP
+
+GraphQL SDL ==> Schema Definition Language
+
+schema {
+	query: Query,
+	mutation : Mutation,
+	subscription: Subscription
+}
+
+
+Query is a special type to fetch data [ SELECT, GET]
+Mutation is a special type to mutate the data [ INSERT, DeLETE or UPDATE]
+Subscription is a type of subscribe for any change to a data where I need notification
+		StockPrice
+
+=====
+
+User defined types
+
+type Product {
+	id:Int!,
+	name: String,
+	price: Float
+}
+
+! not null
+
+* Scalar type
+ ID, Int, String, Float, Boolean
+
+
+* Object type
+
+type Product {
+	id:Int!,
+	name: String,
+	price: Float,
+	supplier: Supplier
+}
+
+
+type Supplier {
+	id: ID,
+	name: String
+}
+
+* collection
+
+type Order {
+
+	items: [Item]
+}
+
+type item {
+	id:Int
+	product: Product,
+	qty:Int
+	amount:Float
+}
+
+
+Schema First approach .graphql or .graphqls ==> shared between parties
+
+
+type Query {
+	products: [Product]
+	productById(id:Int) : Product
+}
+
+Resolver / DataFetchers
+
+List<Product> products() {  // getProducts()
+	jpa ...
+}
+
+Product productById(int id) {
+	jpa ...
+}
+
+
+client:
+
+query {
+	products {
+		name,
+		price
+	}
+}
+
+
+--
+
+query {
+	products {
+		id,
+		name,
+		supplier {
+			name
+		}
+	}
+}
+
+mutation {
+	createProduct(,,,,) {
+		id
+	}
+}
+
+=====================================
+
+graphql-java API
+graphQL-java-kickstart API ==> integrate with Spring boot
+
+
+
+
 
 
 
