@@ -1175,3 +1175,31 @@ applyTransaction(ProceedingJoinPoint jp) {
 	}
 }
 
+ 
+		
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.7.0</version>
+		</dependency>
+		
+
+
+-====
+
+Spring AOP doesn't support Dynamic Pointcuts
+
+=======================================================
+
+https://docs.spring.io/spring-framework/docs/2.0.x/reference/aop.html
+
+==============================================
+
+
+
+

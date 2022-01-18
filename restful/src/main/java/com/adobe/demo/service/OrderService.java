@@ -1,7 +1,9 @@
 package com.adobe.demo.service;
 
 import java.util.List;
+import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +59,11 @@ public class OrderService {
 	}
 	
 	public Product getProductById(int id) {
-		return productDao.findById(id).get(); // EAGER fetching
-		
+		Optional<Product> opt =  productDao.findById(id); // EAGER fetching
+		if(opt.isPresent()) {
+			return opt.get();
+		} else 
+			throw new EntityNotFoundException("Product " + id +" doesn't exist!!!");
 //		return productDao.getById(id); // Lazy loading ==> returns a Proxy Object
 	}
 	
