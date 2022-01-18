@@ -912,6 +912,155 @@ companyWithDepartmentsGraph ==> loads  company and "departments"; and also other
 	@OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
 	    private Set<Department> departments = new HashSet<>();
 
-	    ===============
+======================================================================================
 
-	    
+Building RESTful Web services using Spring Boot
+
+Spring Core
+Spring ORM Module
+Spring MVC module
+
+
+REpresentational State Transfer
+
+Resource ==> present on server [ database , file , printer ]
+
+State of resource is Representation
+
+State can be served in various formats [ xml, json, csv, ...] to clients 
+
+
+SOAP is a protocol
+
+REST and GraphQL are architectural pattern used over HTTP
+
+1) Client - server 
+	
+2) Uniform URL
+	
+
+Plural nouns to identify the resources
+
+http://server/api/products
+http://server/api/orders
+http://server/api/customers
+
+
+
+HTTP methods to perform action ==> GET, POST, PUT and DELETE
+
+CREATE ==> POST
+READ ==> GET
+UPDATE ==> PUT / PATCH
+DELETE ==> DELETE
+
+1) 
+GET
+http://localhost:8080/api/products
+get all products
+
+2) 
+
+GET
+http://localhost:8080/api/products/4
+get product whose id is "4"
+
+GET
+http://localhost:8080/api/customers/anil@adobe.com/order
+get orders of customer whose email is "anil@adobe.com"
+
+PathParameter
+
+3)
+GET
+http://localhost:8080/api/products?page=4&size=20
+http://localhost:8080/api/products?lower=500&high=50000
+to get subset [ filters]
+
+QueryParameter ==> RequestParameter
+
+4) 
+POST
+http://localhost:8080/api/products
+
+payload contains new "product" data to be added to "products"
+
+
+5)
+
+PUT
+http://localhost:8080/api/products/4
+
+payload contains new "product" data to be modified in "products" where id is "4"
+
+
+
+6)
+DELETE
+
+http://localhost:8080/api/products/4
+
+delete a product whose id is '4'
+
+
+============================================
+
+GET and DELETE are IDEMPOTENT
+
+POST and PUT are not IDEMPOTENT
+
+=================================================
+
+
+@Controller ==> for traditional web application development where methods return "views" ==> html / pdf/ image
+	==> Server Side rendering
+
+@RestController ==> representation of data in different formats to client; client will do "client - side redenring"
+		Mobile Client, Web client , Stand alone
+
+
+
+@RestController
+@RequestMapping("api/employees")
+public class EmployeeController {
+
+	@GetMapping()
+	m1() {
+
+	}
+
+	@PostMapping()
+	m2() {
+
+	}
+}	
+
+
+
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+
+Spring MVC module
+Java <--> JSON HttpMessageConvertor is made availble using Jackson library
+	1) jackson
+	2) jettison
+	3) GSON
+	4) Moxy
+
+=============
+
+download POSTMAN
+
+====================
+
+	
+
+
+
+
+
+
+
+
