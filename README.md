@@ -1108,9 +1108,70 @@ GET
 http://localhost:8080/api/orders
 
 
+==========================================================================
+
+AOP ==> Aspect Oriented Programming
+ Cross cutting concerns which leads to code tangling and code scattering
+
+* Aspect ==> a bit of code which is not part of main logic; but can be used along with main logic
+ 	Examples: Logging, Security, Profile, Transaction
+
+ Tangling:
+ 	public void transferFunds(...) {
+ 		profile.start();
+ 		log.info("transfering funds");
+ 		if(ctx.getPrinciple().getRole("MANAGER")) {
+ 			Transaction tx = ...
+ 				withdraw(amt);
+ 				log.info("amount withdraw done")
+ 				deposit(amt);
+ 				log.info("amount deposit done")
+ 			tx.commit();
+ 		}
+ 		log.info("transfer completed")
+ 		profile.end(); // time to exceute the method
+ 	}
+
+class TransactionAspect{
+
+}
+
+class LogAspect {
+
+}
+
+class ProfileAspect {
+
+}
+
+* JoinPoint
+
+is a place in your code where aspect can be "weaved"
+
+==> supports methods and exception as JoinPoint
+
+* PointCut
+	is selected JoinPoint
+
+* Advice
+	Before, After, AfterReturning, Around, AfterThrowing
 
 
+====================================
+
+execution(modifiers-pattern? ret-type-pattern declaring-type-pattern? name-pattern(param-pattern)
+          throws-pattern?)
 
 
+@Transactional
 
+applyTransaction(ProceedingJoinPoint jp) {
+	try {
+		Tx begin
+		jp.proceed();
+		Tx commit
+	} catch(...) {
+		tx.rollback();
+	}
+}
 
