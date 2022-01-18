@@ -1200,6 +1200,58 @@ https://docs.spring.io/spring-framework/docs/2.0.x/reference/aop.html
 
 ==============================================
 
+@ControllerAdvice 
+
+Built-in Advice in Spring MVC to catch exceptions propgated from @Controller or @RestController
+
+
+
+
+ MethodArgumentNotValidException: 
+
+ Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.adobe.demo.entity.Product> com.adobe.demo.api.ProductController.addProduct(com.adobe.demo.entity.Product) with 2 errors: 
+ 	[Field error in object 'product' on field 'name': rejected value []; codes [NotBlank.product.name,NotBlank.name,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [product.name,name]; arguments []; default message [name]]; default message [Name is required]] 
+
+ 	[Field error in object 'product' on field 'price': rejected value [-150.0]; codes [Min.product.price,Min.price,Min.double,Min]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [product.price,price]; arguments []; default message [price],0]; default message [Price -150.0 should be more than 0]] ]
+
+
+========
+
+Changes:
+
+OrderService ==> getProduct
+
+Product.java ==> added validation rules
+
+ProductController addProduct(... @Valid )
+
+GlobalExceptionHandler
+
+=======================================================================
+
+
+Testing:
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+</dependency>
+
+JUnit ==> Unit testing Framework / TestNG
+
+Hamcrest ==> matchers for assertions
+
+Json-path ==> to test json returned value
+
+Mockito ==> Mocking library ==> EasyMock / JMock
+
+=============
+
+
+
+
+
+
 
 
 
