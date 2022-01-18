@@ -730,3 +730,94 @@ actor_id name
 
 movie_actor
 mid | aid
+
+===
+
+client sends orders as
+
+order should have "email" of customer
+order has many items
+	Each item
+		qty
+		product ==> id
+
+
+=====
+
+orderDao.getById(1); ==> returns Proxy Order
+
+orderDao.findById(1).get() ==> actual Order
+
+=
+
+Items of Order ==> EAGER or LAZY
+
+===========================================================
+
+
+Day 2
+
+spring and Spring boot
+@Component, @Respository, @Service, @Configuration, @Bean and @Autowired
+
+@Profile, @Primary, @Qualifier, @ConditionalOnBean, @ConditionalOnMissingBean, @ConditionalOnProperty
+
+application.properties
+
+application_dev.properties ==> for "dev" profile
+application_prod.properties for "prod" profile
+
+@SpringBootApplication
+@ComponentScan
+@EnableAutoConfiguration
+@Configuration
+
+CommandLineRunner
+
+
+ORM and JPA
+PersistenceContext , EntityManager, EntityManagerFactory [ DataSource, JPAVendor Provider]
+
+Spring Data JPA provides interfaces like CrudRepository, PageAndSortingRespository, JpaRepository
+
+interface ProductDao extends JpaRespostory<Product, Integer> {
+
+}
+
+@Query
+@Modifying
+
+OneToMany
+ManyToMany
+ManyToMany
+OneToOne
+
+Cascade and Fetch.EAGER and Fetch.LAZY
+
+========================
+
+Day 2
+
+1) @Query("from Employee") ==> JPQL
+
+2) @Query(value="select * from employees", nativeQuery=true) ==> SQL valid
+
+
+3) Criteria API ==> OOP way of building queuries
+
+
+Criteria cr = session.createCriteria(Employee.class);
+cr.add(Restrictions.eq("salary", 2000)); // Where clause
+List results = cr.list();
+
+4) JPA Specification ==> DDD
+
+public interface CustomerRepository extends JpaRepository<Customer, Long>, JpaSpecificationExecutor<Customer> {
+ …
+}
+
+class CustomerSpecification implements Specification {
+	public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+		
+	}
+}
