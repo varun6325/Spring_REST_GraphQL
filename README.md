@@ -1419,7 +1419,7 @@ mutation {
 graphql-java API
 graphQL-java-kickstart API ==> integrate with Spring boot
 
-
+https://howtodoinjava.com/lombok/lombok-eclipse-installation-examples/
 
 
 
