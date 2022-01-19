@@ -1599,3 +1599,56 @@ query {
 }
 
 
+====
+
+POST localhost:8080/graphql
+
+
+curl --location --request POST 'localhost:8080/graphql' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--data-raw '{"query":"query {\r\n    helloWorld\r\n}","variables":{}}'
+
+===================
+
+Operation Name:
+
+query FETCHBOOK_BYID {
+   bookById(id:5) {
+    title
+  }
+}
+
+query GET_BOOKS  {
+  books {
+    title
+    rating
+  }
+}
+
+=========
+
+Query Variables:
+
+query FETCHBOOK_BYID($bid:Int) {
+   bookById(id:$bid) {
+    title
+  }
+}
+
+
+Query Variable:
+
+{
+  "bid": 4
+}
+
+=======================
+
+GraphQLHttpServlet
+AbstractGraphQLHttpServlet
+DataFetchingEnvironment
+ExecutionResult
+
+==================
+
