@@ -1733,3 +1733,11 @@ changes:
 4) Publisher resolvers
 
 
+=============
+
+Custom Scalar Type ==> Date
+
+Book.java
+@Column(name="published_date")
+private Date publishedDate;
+

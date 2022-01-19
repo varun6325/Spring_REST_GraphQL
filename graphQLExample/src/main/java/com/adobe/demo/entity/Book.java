@@ -1,5 +1,7 @@
 package com.adobe.demo.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -35,4 +37,7 @@ public class Book {
 
 	@Column(name="publisher_id" , insertable = false, updatable = false)
 	private Integer publisherId; // book.getPublisherId();
+	
+	@Column(name="published_date")
+	private Date publishedDate;
 }
