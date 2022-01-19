@@ -1507,3 +1507,75 @@ Response:
   }
 }
 
+===
+type Query {
+	helloWorld:String!
+	greeting(firstName:String!, lastName:String): String!
+}
+
+public String getGreeting(String firstName, String lastName) {
+		return String.format("Hello %s %s", firstName, lastName);
+	}
+
+
+query {
+  greeting(firstName:"Banu", lastName : "Prakash")
+}
+
+
+Response:
+{
+  "data": {
+    "greeting": "Hello Banu Prakash"
+  }
+}
+
+====
+type Query {
+	helloWorld:String!
+	greeting(firstName:String!, lastName:String): String!
+	books:[Book]
+}
+
+# Book type
+
+type Book {
+ id:Int,
+ title:String!,
+ totalPages:Int,
+ rating:Float,
+ isbn:String
+}
+
+
+====
+
+@Component
+public class BookQueryResolver implements GraphQLQueryResolver {
+	@Autowired
+	private BookDao bookDao;
+	
+	public List<Book> getBooks() {
+		return bookDao.findAll();
+	}
+}
+
+===
+
+
+query {
+  books {
+    id
+    title
+    rating
+    isbn
+  }
+}
+
+=======
+
+http://localhost:8080/graphiql
+http://localhost:8080/playground
+http://localhost:8080/voyager
+
+

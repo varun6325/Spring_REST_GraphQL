@@ -10,4 +10,8 @@ public class HelloWorldQueryResolver implements GraphQLQueryResolver {
 	public String helloWorld() {
 		return "Hello World from GraphQL!!!";
 	}
+	
+	public String getGreeting(String firstName, String lastName) {
+		return String.format("Hello %s %s", firstName, lastName);
+	}
 }
