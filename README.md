@@ -1578,4 +1578,24 @@ http://localhost:8080/graphiql
 http://localhost:8080/playground
 http://localhost:8080/voyager
 
+====
+type Query {
+	helloWorld:String!
+	greeting(firstName:String!, lastName:String): String!
+	books:[Book]
+	bookById(id:Int):Book
+}
+
+Resolver method:
+public Book getBookById(int id) {
+		return bookDao.findById(id).get();
+}
+
+
+query {
+   bookById(id:5) {
+    title
+  }
+}
+
 

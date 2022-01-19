@@ -24,4 +24,9 @@ public class BookQueryResolver implements GraphQLQueryResolver {
 		System.out.println(fields);
 		return bookDao.findAll();
 	}
+	
+	
+	public Book getBookById(int id) {
+		return bookDao.findById(id).get();
+	}
 }
