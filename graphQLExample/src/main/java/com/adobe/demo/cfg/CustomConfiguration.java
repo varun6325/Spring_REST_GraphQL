@@ -7,6 +7,7 @@ import java.util.Date;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import graphql.kickstart.tools.boot.SchemaDirective;
 import graphql.schema.Coercing;
 import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
@@ -16,6 +17,11 @@ import graphql.schema.GraphQLScalarType;
 @Configuration
 public class CustomConfiguration {
 
+	@Bean
+	public SchemaDirective upperCaseDirective() {
+		return new SchemaDirective("uppercase", new UppercaseDirective());
+	}
+	
 	@Bean
 	public GraphQLScalarType dateScalar() {
 		return GraphQLScalarType.newScalar()

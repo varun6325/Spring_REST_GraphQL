@@ -1741,3 +1741,95 @@ Book.java
 @Column(name="published_date")
 private Date publishedDate;
 
+
+schema.graphqls
+
+scalar Date
+
+
+type Book {
+ ...
+ publishedDate: Date,
+ ...
+}
+
+
+=============================
+
+
+--> GraphQLQueryResolver ==> handle Query
+--> GraphQLResolver<T> ==> handle DataFetcher on fields of a Type
+
+Custom Scalar types
+
+Bean with GraphQLScalarType bean having coercing implementation [ serialiaze, parseValue and parseLiteral]
+
+===================
+
+ExtendedScalars
+
+scalar PositiveIntScalar;
+
+type Product {
+	id:PositiveIntScalar
+}
+
+
+@Bean
+public GraphQLScalarType positiveIntScalar() {
+	return ExtendedScalars.PositiveIntScalar;
+}
+
+=======================================================================
+
+* Directives
+
+Built-in directives
+1) @skip
+2) @include
+3) @deprecated
+4) @specifedBy ==> URL
+
+
+directive @deprecated on FIELD_DEFINITION
+
+totalPages:Int  @deprecated(reason:"prefer using pages"),
+
+client gets deprecated warning
+
+==
+
+query GET_BOOKS($admin:Boolean!) {
+  books {
+     title
+     rating @include(if : $admin)
+     totalPages
+  }
+}
+
+Query Variable
+{
+  "admin": false
+}
+
+
+======
+
+Custom Directive
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
