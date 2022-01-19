@@ -1813,9 +1813,45 @@ Query Variable
 }
 
 
-======
+==================================
 
 Custom Directive
+@uppercase
+
+===================================
+
+
+schema {
+	query: Query,
+	mutation: Mutation
+}
+
+
+==============================
+
+
+
+type Mutation {
+	createAuthor(author:AuthorInput): Int
+}
+
+# AuthorDTO
+input AuthorInput {
+	firstName:String,
+	lastName:String,
+	middleName:String
+}
+
+type Author {
+	id:Int,
+	firstName:String,
+	lastName:String,
+	middleName:String
+}
+
+
+
+
 
 
 

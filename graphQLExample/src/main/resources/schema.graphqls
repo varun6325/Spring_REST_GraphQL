@@ -11,6 +11,18 @@ type Query {
 	publishers:[Publisher]
 }
 
+
+type Mutation {
+	createAuthor(author:AuthorInput): Int
+}
+
+# AuthorDTO
+input AuthorInput {
+	firstName:String,
+	lastName:String,
+	middleName:String
+}
+
 # Book type
 
 type Book {
@@ -32,3 +44,11 @@ type Publisher {
 }
 
 
+# Author Type
+
+type Author {
+	id:Int,
+	firstName:String,
+	lastName:String,
+	middleName:String
+}
