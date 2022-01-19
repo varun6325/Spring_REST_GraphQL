@@ -1421,10 +1421,59 @@ graphQL-java-kickstart API ==> integrate with Spring boot
 
 https://howtodoinjava.com/lombok/lombok-eclipse-installation-examples/
 
+=======================================================
+
+Day 3
+
+GraphQL ==> Query Language 
+
+GraphQL SDL ==>
+
+Query, Mutation and Subscription are special types
+
+1) Schema first approach
+2) code first approach
+
+type TypeName {
+	fieldName: fieldType
+}
+
+Scalar Built-in types: ID, Int, Float, Boolean, String
+
+enum, Object, collection
+
+type Product {
+	supplier:Supplier
+}
+
+type Supplier {
+	products: [Product]
+}
+
+schema {
+	query: Query,
+	mutation : Mutation,
+	subscription: Subscription
+}
 
 
+query {
+	products {
+		id,
+		name,
+		supplier {
+			name
+		}
+	}
+}
 
+mutation {
+	createProduct(,,,,) {
+		id
+	}
+}
 
+============================================
 
 
 
