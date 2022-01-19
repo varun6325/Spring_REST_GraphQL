@@ -11,7 +11,11 @@ import org.springframework.stereotype.Component;
 import com.adobe.demo.dao.BookDao;
 import com.adobe.demo.entity.Book;
 
+import graphql.execution.DataFetcherResult;
+import graphql.kickstart.execution.error.GenericGraphQLError;
 import graphql.kickstart.tools.GraphQLQueryResolver;
+import graphql.relay.Connection;
+import graphql.relay.SimpleListConnection;
 import graphql.schema.DataFetchingEnvironment;
 
 @Component
@@ -29,10 +33,22 @@ public class BookQueryResolver implements GraphQLQueryResolver {
 	
 	
 	public Book getBookById(int id) {
-		Optional<Book> opt =  bookDao.findById(id);
-		if(opt.isPresent()) {
-			return opt.get();
-		}
-		throw new ResourceNotFoundException("Book with " + id + " doesn't exist!!!");
+		/*
+		 * Optional<Book> opt = bookDao.findById(id); if(opt.isPresent()) { return
+		 * opt.get(); } throw new ResourceNotFoundException("Book with " + id +
+		 * " doesn't exist!!!");
+		 */
+		return bookDao.findById(id).get();
+	}
+	
+	public DataFetcherResult<Book> partialInfoById(int id) {
+		return DataFetcherResult.<Book>newResult()
+				.data(bookDao.findById(id).get())
+				.error(new GenericGraphQLError("can't get publisher for book " + id))
+				.build();
+	}
+	
+	public Connection<Book> booksByPage(int first, String after, DataFetchingEnvironment env) {
+		return new SimpleListConnection<>(bookDao.findAll()).get(env);
 	}
 }

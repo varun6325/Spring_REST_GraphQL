@@ -1849,6 +1849,250 @@ type Author {
 	middleName:String
 }
 
+@Component
+public class AuthorMutationResolver implements GraphQLMutationResolver {
+	@Autowired
+	private AuthorDao authorDao;
+	
+	public Integer createAuthor(Author author) {
+			return authorDao.save(author).getId();
+	}
+}
+
+=====================================
+
+Validation
+Exception Handling
+
+query {
+   bookById(id:5999) {
+    title
+    rating
+    publishedDate
+  }
+}
+
+
+ExecutionResult:
+
+{
+  "errors": [
+    {
+      "message": "No value present",
+      "locations": [
+        {
+          "line": 2,
+          "column": 4
+        }
+      ],
+      "path": [
+        "bookById"
+      ],
+      "extensions": {
+        "type": "NoSuchElementException",
+        "classification": "DataFetchingException"
+      }
+    }
+  ],
+  "data": {
+    "bookById": null
+  }
+}
+
+==========================================
+
+public class CustomGraphQLErrorHandler implements GraphQLErrorHandler {
+	List<GraphQLError> processErrors( list of GraphQLError) {
+
+	}
+}
+
+
+=============================================================
+
+
+Asynchronous resolvers
+
+	Company
+		departments
+		employees
+
+
+	Thread ==> Request
+
+	CompanyFieldResolver implements GraphQLResolver<Company> {
+
+		List<Department> getDepartment() {
+			DAO call or API call
+		}
+
+		List<Employee> getEmployees() {
+			DAO call or API call
+		}
+	}
+
+Asynchronous resolvers returns Promise  / Future / CompletableFuture CompleationStage
+
+
+
+===============
+
+DataFetcherResult ==> Partial Data
+
+=============
+
+* Pagination
+1) offset based
+
+books(start:Int, size:Int) :[Book]
+
+DAO 
+
+Pageable page = PageRequest.of(start, size);
+
+bookDao.findAll(page).getContent();
+
+2) Facebook Relay [ https://relay.dev/graphql/connections.htm#sec-Connection-Types]
+   Cursor based
+   GraphQL Cursor Connections Specification
+
+   edges {
+        cursor
+        node {
+          id
+          name
+        }
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviosPage
+      }
+
+
+    a) pageInfo
+    b) edge
+    		1) cursor ==> cursor value is stored in DatafetchingEnvironment
+    		2) node
+    				type
+
+
+====
+
+partialInfoById(id:Int):Book 
+	booksByPage(first:Int, after:String) : BookConnection
+}
+
+type BookConnection {
+	edges: [BookEdge]
+	pageInfo: PageInfo
+}
+
+type BookEdge {
+  cursor:String,
+  node:Book
+}
+
+type PageInfo {
+ hasPreviousPage:Boolean!
+ hasNextPage:Boolean!
+}
+
+
+===========================
+
+
+query {
+  booksByPage(first:5) {
+    edges {
+      cursor
+      node {
+        title
+        rating
+      }
+    }
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+    }
+  }
+}
+==
+
+{
+  "data": {
+    "booksByPage": {
+      "edges": [
+        {
+          "cursor": "c2ltcGxlLWN1cnNvcjA=",
+          "node": {
+            "title": "LEAN SOFTWARE DEVELOPMENT: AN AGILE TOOLKIT",
+            "rating": 4.17
+          }
+        },
+        {
+          "cursor": "c2ltcGxlLWN1cnNvcjE=",
+          "node": {
+            "title": "FACING THE INTELLIGENCE EXPLOSION",
+            "rating": 3.87
+          }
+        },
+        {
+          "cursor": "c2ltcGxlLWN1cnNvcjI=",
+          "node": {
+            "title": "SCALA IN ACTION",
+            "rating": 3.74
+          }
+        },
+        {
+          "cursor": "c2ltcGxlLWN1cnNvcjM=",
+          "node": {
+            "title": "PATTERNS OF SOFTWARE: TALES FROM THE SOFTWARE COMMUNITY",
+            "rating": 3.84
+          }
+        },
+        {
+          "cursor": "c2ltcGxlLWN1cnNvcjQ=",
+          "node": {
+            "title": "ANATOMY OF LISP",
+            "rating": 4.43
+          }
+        }
+      ],
+      "pageInfo": {
+        "hasPreviousPage": false,
+        "hasNextPage": true
+      }
+    }
+  }
+}
+
+
+====
+
+query {
+  booksByPage(first:5, after: "c2ltcGxlLWN1cnNvcjI=") {
+    edges {
+      cursor 
+      node {
+        title
+        rating
+      }
+    }
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+    }
+  }
+}
+
+
+================================================
+
+
+
+
+
+
 
 
 
