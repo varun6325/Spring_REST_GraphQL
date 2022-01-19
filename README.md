@@ -1674,7 +1674,62 @@ graphiql.cdn.version=0.11.11
 
 
 ======================
+Field Resolvers:
+
+@component
+class BookFieldQueryResolver implements GraphQLResolver<Book> {
+
+	double getRating() {
+		return 9.9;
+	}
+
+	int totalPages() {
+		return 100;
+	}
+}
+
+======================
 
 
+QueryREsolver:
+
+@Component
+public class BookQueryResolver implements GraphQLQueryResolver {
+
+
+FieldResolver:
+
+@Component
+public class BookFieldQueryResolver implements GraphQLResolver<Book> {
+
+
+}
+
+===
+
+changes:
+1) schema.graphqls
+2) Publihser.java
+3) PublisherDao.java
+3) Book.java ==> Association added
+4) BookFieldQueryResolver.java
+
+===================
+
+query {
+  publishers {
+    name
+    books {
+      title
+     }
+  }
+}
+
+
+changes:
+1) schema.graphqls
+2) BookDao.java
+3) publisher.java
+4) Publisher resolvers
 
 

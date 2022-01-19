@@ -3,6 +3,7 @@ type Query {
 	greeting(firstName:String!, lastName:String): String!
 	books:[Book]
 	bookById(id:Int):Book
+	publishers:[Publisher]
 }
 
 # Book type
@@ -19,6 +20,7 @@ type Book {
 # Publisher Type
 
 type Publisher {
- id:Int!,
- name:String!
+ id:Int,
+ name:String,
+ books:[Book]
 }
