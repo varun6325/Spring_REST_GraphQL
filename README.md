@@ -1478,3 +1478,32 @@ mutation {
 
 
 
+schema.graphqls
+type Query {
+	helloWorld:String!
+}
+
+QueryResolver
+
+@Component
+public class HelloWorldQueryResolver implements GraphQLQueryResolver {
+//	public String getHelloWorld() {
+	public String helloWorld() {
+		return "Hello World from GraphQL!!!";
+	}
+}
+
+http://localhost:8080/graphiql
+
+query {
+  helloWorld
+}
+
+Response:
+
+{
+  "data": {
+    "helloWorld": "Hello World from GraphQL!!!"
+  }
+}
+
