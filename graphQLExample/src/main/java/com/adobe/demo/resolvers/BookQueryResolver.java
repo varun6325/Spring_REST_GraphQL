@@ -22,6 +22,7 @@ public class BookQueryResolver implements GraphQLQueryResolver {
 		Set<String> fields = 
 				env.getSelectionSet().getFields().stream().map(field -> field.getName()).collect(Collectors.toSet());
 		System.out.println(fields);
+		 
 		return bookDao.findAll();
 	}
 	

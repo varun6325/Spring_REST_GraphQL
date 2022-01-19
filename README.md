@@ -1652,3 +1652,29 @@ ExecutionResult
 
 ==================
 
+Unit Testing GraphQL Resolvers
+
+<dependency>
+			<groupId>com.graphql-java-kickstart</groupId>
+			<artifactId>graphql-spring-boot-starter-test</artifactId>
+			<version>11.1.0</version>
+			<scope>test</scope>
+</dependency>
+
+
+graphql.servlet.mapping=/graphql
+graphql.servlet.enabled=true
+graphql.servlet.corsEnabled=true
+# GraphiQL
+graphiql.mapping=/graphiql
+graphiql.endpoint=/graphql
+graphiql.enabled=true
+graphiql.cdn.enabled=true
+graphiql.cdn.version=0.11.11
+
+
+======================
+
+
+
+

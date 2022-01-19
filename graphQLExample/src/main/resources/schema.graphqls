@@ -12,5 +12,13 @@ type Book {
  title:String!,
  totalPages:Int,
  rating:Float,
- isbn:String
+ isbn:String,
+ publisher:Publisher # book is published by a publisher
+}
+
+# Publisher Type
+
+type Publisher {
+ id:Int!,
+ name:String!
 }
