@@ -1,6 +1,7 @@
 package com.adobe.demo.resolvers;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,6 +29,10 @@ public class BookQueryResolver implements GraphQLQueryResolver {
 	
 	
 	public Book getBookById(int id) {
-		return bookDao.findById(id).get();
+		Optional<Book> opt =  bookDao.findById(id);
+		if(opt.isPresent()) {
+			return opt.get();
+		}
+		throw new ResourceNotFoundException("Book with " + id + " doesn't exist!!!");
 	}
 }
