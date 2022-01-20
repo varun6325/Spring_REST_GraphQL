@@ -8,3 +8,6 @@ insert into post(id, title, description, category, author_id) values(100, 'post 
 insert into post(id, title, description, category, author_id) values(101, 'spring boot','spring boot and graphQl', 'IT',2);
 insert into post(id, title, description, category, author_id) values(102, 'REACT','REACT course', 'IT', 2);
 insert into post(id, title, description, category, author_id) values(103, 'JS','JS course', 'IT', 4);
+
+
+ 

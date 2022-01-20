@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import com.adobe.demo.entity.Author;
 
 @Repository
-public interface AuthorDao extends JpaRepository<Author, UUID> {
+public interface AuthorDao extends JpaRepository<Author, Integer> {
 }

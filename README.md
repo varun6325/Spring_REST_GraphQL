@@ -2299,6 +2299,106 @@ DashBoard has to be updated whenever StoreInsights, CustomerInsight, StockPrice
 
 ============================
 
+publisher.subscribe(doTask);
+
+
+void doTaksk(data) {
+
+
+}
+
+==================
+
+	type Subscription {
+		stockPrice(id:Int): Double
+	}
+
+	GraphQLSubscriptionResolver
+
+		public Publisher<Double> stockPrice(int id)
+
+	}
+
+	rxJava has Observable as Publisher
+
+		Observable has methods like onNext(data) onComplete() and onError(err) ==> used in MutationResolver
+
+		Flowable is an Observable with Backpressure
+
+
+ 
+ 	client uses publisher to subscribe
+
+============================================
+
+Optimization ==> using Async Resolvers
+
+Prevent N + 1 hits
+type Query {
+ books:[Book]
+}
+
+type Book {
+ id:Int,
+ title:String! @uppercase,
+ totalPages:Int  @deprecated(reason:"prefer using pages"),
+ rating:Float,
+ isbn:String,
+ publishedDate: Date,
+ publisher:Publisher # book is published by a publisher
+}
+
+BookQueryResolver
+	select * from books
+		==> has 10 books
+
+BookFieldResolver
+	Publisher getPublisher(Book book) {
+			select * from publisher where pubId = ? ==> 10 hits
+	}
+
+11 hits to the DB
+
+===================================
+
+N + 1 Problem in GraphQL is solved using DataLoader ==> Facebook specification
+	
+	collect pubIds of each book into a Set [ elimiate duplicates]
+
+	Map<Integer,Publisher> ==> key is publihserID and value is Publisher
+
+	publisherDao.findAllById(setofids); ==> returned value populate to the Map
+
+	and reolve it as Book ==> Publisher in CompletableFuture way
+
+	Hits ==> 2 irrespective of Book has 100 or 1000 records
+
+=======================================================
+
+for every Post load author_id into dataloader
+
+dataLoader.load(post.getAuthorId()); ==> Set<Integer>
+
+Map<Integer,Author> authorMap = ....
+
+	dispatch()
+
+  DataLoader<Integer, Author> authorLoader =
+            new DataLoader<>(
+                authorIds -> supplyAsync(() -> authorDao.findAllById(authorIds))); // Select * from authors where aid in (?,?,?,?)
+
+
+================
+
+
+
+
+
+
+
+
+
+
 
 
 

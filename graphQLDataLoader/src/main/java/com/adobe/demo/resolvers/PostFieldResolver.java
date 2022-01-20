@@ -13,6 +13,7 @@ import graphql.schema.DataFetchingEnvironment;
 
 @Component
 public class PostFieldResolver implements GraphQLResolver<Post>{
+	// Async Resolver
 	public CompletableFuture<Author> getAuthor(Post post, DataFetchingEnvironment environment)  {
         DataLoader<Integer, Author> dataLoader = environment.getDataLoader("authorDataLoader");
         return dataLoader.load(post.getAuthorId());

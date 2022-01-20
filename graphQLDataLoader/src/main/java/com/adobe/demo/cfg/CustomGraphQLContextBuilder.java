@@ -3,8 +3,6 @@ package com.adobe.demo.cfg;
 
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
-import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.websocket.Session;
@@ -59,7 +57,7 @@ public class CustomGraphQLContextBuilder implements GraphQLServletContextBuilder
     
     private DataLoaderRegistry buildDataLoaderRegistry() {
         DataLoaderRegistry dataLoaderRegistry = new DataLoaderRegistry();
-        DataLoader<UUID, Author> authorLoader =
+        DataLoader<Integer, Author> authorLoader =
             new DataLoader<>(
                 authorIds -> supplyAsync(() -> authorDao.findAllById(authorIds)));
         dataLoaderRegistry.register("authorDataLoader", authorLoader);
