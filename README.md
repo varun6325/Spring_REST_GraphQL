@@ -2390,6 +2390,156 @@ Map<Integer,Author> authorMap = ....
 
 ================
 
+query {
+ posts{
+	title
+  
+  author {
+    name
+  }
+  
+}
+ 
+}
+
+select
+        post0_.id as id1_1_,
+        post0_.author_id as author_i2_1_,
+        post0_.category as category3_1_,
+        post0_.description as descript4_1_,
+        post0_.title as title5_1_ 
+    from
+        post post0_
+Hibernate: 
+    select
+        author0_.id as id1_0_,
+        author0_.email as email2_0_,
+        author0_.name as name3_0_ 
+    from
+        author author0_ 
+    where
+        author0_.id in (
+            ? , ? , ?
+        )
+ 
+ ===============================
+
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+
+Method Level Security:
+
+@Secured
+@PreAuthorize
+@PostAuthorize
+
+
+===
+
+
+JSON Web Tokens are an open, industry standard RFC 7519 method for representing claims securely between two parties.
+
+
+
+RESTful and GraphQL has to be stateless [ Don't depend on JSESSIONID]
+
+Token based authorization
+
+	Token should have claims
+		--> subject ==> who you are
+		--> iat ==> issued at time
+		--> iss ==> issuer ==> Adobe
+		--> exp ==> expire
+		--> authorities ==> ADMIN / USER
+
+JWT is a standard
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.
+SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+HEADER:
+
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+
+PAYLOAD:
+
+{
+  "sub": "1234567890",
+  "name": "John Doe",
+  "iat": 1516239022
+}
+
+VERIFY SIGNATURE
+
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  MyTopSecret123
+) 
+
+
+=================
+
+
+application.jwt.secretKey=securesecuresecuresecuresecuresecuresecuresecuresecuresecuresecure
+application.jwt.tokenPrefix=Bearer 
+application.jwt.tokenExpirationAfterDays=10
+
+@Configuration
+@ConfigurationProperties(prefix = "application.jwt")
+public class JwtConfig {
+
+    private String secretKey;
+    private String tokenPrefix;
+    private Integer tokenExpirationAfterDays;
+
+
+
+    @Bean
+    public SecretKey secretKey() {
+        return Keys.hmacShaKeyFor(this.getSecretKey().getBytes());
+    }
+
+
+===
+
+
+HTTP Header
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.
+SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+
+===
+
+POST http://localhost:8080/login
+
+accept: application/json
+content-type: application/json
+
+body raw:
+
+{
+    "username" : "banu",
+    "password": "secret"
+}
+
+Response Headers:
+
+Authorization:
+Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiYW51IiwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjQyNjYzODQwLCJleHAiOjE2NDM0ODEwMDB9.7Z45S-KKABG5MffTowpns-of5wSIKhafkht6rz-8ppvzRp4sP9gan5iPiVaq3So4rn6UX5W-Yc8j6BbgnC5DkQ
+
+
+
+
+
+
 
 
 
