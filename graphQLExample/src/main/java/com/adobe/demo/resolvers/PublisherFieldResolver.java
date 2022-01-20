@@ -20,4 +20,6 @@ public class PublisherFieldResolver implements GraphQLResolver<Publisher> {
 	public List<Book> books(Publisher pub) {
 		return bookDao.getByPubId(pub.getId());
 	}
+	
+	
 }

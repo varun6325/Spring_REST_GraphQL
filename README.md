@@ -2089,6 +2089,194 @@ query {
 ================================================
 
 
+Day 4
+
+GraphQL Schemas are files in classpath "resources" folder with an extension of ".graphql" or ".graphqls"
+
+schema ==> Query, Mutation and Subscription
+
+Scalar Type 
+Custom Scalar Types ==> Coercing
+ExtendedScalar ==> @Bean 
+Directive ==> SchemaDirectiveWiring
+
+GraphQLQueryResolver and GraphQLResolver<T> [ field resolver]
+
+GraphQLMutationResolver
+
+javax.validation.constraints for Input validations
+
+GraphQLError ==> exception implements GraphQLError
+
+Async Resolvers ==> Good to use in GraphQLResolver<T> in scenarios wherein a type has "N" number of associations
+	, then each associated data has to fetched from differnt Services/database
+	Pool of threads ==> use them for each of the assocaiton to be fetched ==> CompletableFuture
+	max of "N" or "M" time to return the data
+
+	MakeMyTrip aggregator
+
+	List<Hotel> hotels() ==> CompletableFuture<List<Hotel>>
+
+	List<Flight> fights() CompletableFuture<List<Flight>>
+
+
+DataFetchingEnvironment
+
+Relay Connection Specification ==> Facebook for Pagination
+
+Pagination ==> offset based ==> Pageable page = PageRequest.of(start, count);
+
+	1 2  3 4 5 6 7 8 9 10
+
+	"3" records from backend
+
+
+Relay Connection Specification ==> data is fetched into GraphQLServer store it in the form of Graph data container and for each node
+provide a "Cursor"
+
+Backward pagination
+
+booksByPage(first:Int, last:Int, after:String, before:String) : BookConnection
+
+
+public Connection<Book> booksByPage(int first, String after, int last, String before, DataFetchingEnvironment env) {
+		return new SimpleListConnection<>(bookDao.findAll()).get(env);
+	}
+
+query {
+  booksByPage(last:5, before :"c2ltcGxlLWN1cnNvcjM=") {
+    edges {
+      cursor
+      node {
+        title
+        rating
+      }
+    }
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+    }
+  }
+}
+
+React --> relay client
+
+Apollo Client ==> builds on top this
+
+=================
+
+Type Definition Factory
+
+	booksByPage(first:Int, last:Int, after:String, before:String) : BookConnection @connection(for:"Book")
+}
+
+# type BookConnection {
+#	edges: [BookEdge]
+#	pageInfo: PageInfo
+# }
+
+# type BookEdge {
+#  cursor:String,
+#  node:Book
+# }
+
+# type PageInfo {
+# hasPreviousPage:Boolean!
+# hasNextPage:Boolean!
+# }
+
+======================
+
+GraphQL Client Fragment:
+
+query {
+  books {
+   ...BookInfo
+  }
+}
+
+
+fragment BookInfo on Book {
+    title
+    rating
+    totalPages
+}
+
+
+==================
+
+Union type
+
+type Product {
+	id:Int,
+	name:String,
+	price:Float
+}
+
+type Tv {
+    id:Int,
+	name:String,
+	price:Float,
+	screenType:String
+}
+
+
+type Mobile {
+    id:Int,
+	name:String,
+	price:Float,
+	connectivity:String
+}
+
+union ProductType = Product | Tv | Mobile
+
+extend type Query {
+ products:[ProductType],
+}
+
+
+========
+
+
+@Bean
+public SchemaParserDictionary getSchemaParserDictionary() {
+		return new SchemaParserDictionary().add(Mobile.class).add(Tv.class).add(Product.class);
+}
+
+=========
+
+query {
+  products {
+    __typename
+    
+    ... on Mobile {
+      name
+      connectivity
+    }
+    
+    ... on Tv {
+      name
+      price
+      screenType
+    }
+  }
+}
+
+
+===============================================
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

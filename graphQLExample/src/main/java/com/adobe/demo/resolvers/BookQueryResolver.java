@@ -48,7 +48,7 @@ public class BookQueryResolver implements GraphQLQueryResolver {
 				.build();
 	}
 	
-	public Connection<Book> booksByPage(int first, String after, DataFetchingEnvironment env) {
+	public Connection<Book> booksByPage(int first, String after, int last, String before, DataFetchingEnvironment env) {
 		return new SimpleListConnection<>(bookDao.findAll()).get(env);
 	}
 }

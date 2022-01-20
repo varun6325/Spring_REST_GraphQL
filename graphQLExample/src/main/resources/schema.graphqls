@@ -10,23 +10,23 @@ type Query {
 	bookById(id:Int):Book 
 	publishers:[Publisher]
 	partialInfoById(id:Int):Book 
-	booksByPage(first:Int, after:String) : BookConnection
+	booksByPage(first:Int, last:Int, after:String, before:String) : BookConnection @connection(for:"Book")
 }
 
-type BookConnection {
-	edges: [BookEdge]
-	pageInfo: PageInfo
-}
+#type BookConnection {
+#	edges: [BookEdge]
+#	pageInfo: PageInfo
+#}
 
-type BookEdge {
-  cursor:String,
-  node:Book
-}
+#type BookEdge {
+#  cursor:String,
+#  node:Book
+# }
 
-type PageInfo {
- hasPreviousPage:Boolean!
- hasNextPage:Boolean!
-}
+#type PageInfo {
+# hasPreviousPage:Boolean!
+# hasNextPage:Boolean!
+# }
 
 type Mutation {
 	createAuthor(author:AuthorInput): Int
