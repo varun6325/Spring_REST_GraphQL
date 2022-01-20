@@ -2265,7 +2265,39 @@ query {
 
 ===============================================
 
+Query, Mutation and Subscription
 
+Subscription:
+
+type Subscription {
+ authors:Author!
+}
+
+type Author {
+	id: Int,
+	firstName: String,
+	lastName: String,
+	middleName :String
+}
+
+
+
+===
+
+Observer:
+
+subscription {
+  authors {
+     firstName
+     lastName
+  }
+}
+
+====
+
+DashBoard has to be updated whenever StoreInsights, CustomerInsight, StockPrice
+
+============================
 
 
 
